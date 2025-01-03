@@ -1,5 +1,5 @@
 struct APIService {
-    let baseURL: String = "https://itunes.apple.com/search?term="
+    let baseURL: String = "https://itunes.apple.com"
     var method: HTTPMethod = .GET
 }
 

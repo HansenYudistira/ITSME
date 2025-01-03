@@ -16,8 +16,12 @@ internal class ModuleAssembler {
 
 internal struct MainMenuModule: Module {
     internal func assemble(coordinator: Coordinator) -> MainMenuViewController {
-        let networkManager = NetworkManager()
-        let vm = MainMenuViewModel(networkManager: networkManager)
+        let contract = MainMenuViewModelContract(
+            networkManager: NetworkManager(),
+            dataDecoder: DataDecoder(),
+            urlConstructor: URLConstructor()
+        )
+        let vm = MainMenuViewModel(contract: contract)
         let viewController = MainMenuViewController(viewModel: vm)
         return viewController
     }
