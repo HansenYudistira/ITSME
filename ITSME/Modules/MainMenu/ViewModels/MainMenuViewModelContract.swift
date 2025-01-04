@@ -7,3 +7,9 @@ internal struct MainMenuViewModelContract {
 protocol MainMenuViewModelFetchProtocol {
     func fetchData(keyword: String)
 }
+
+protocol MainMenuViewModelAudioProtocol {
+    func playAudio(trackId: Int)
+    func stopAudio()
+    func pauseAudio()
+}

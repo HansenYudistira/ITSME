@@ -111,27 +111,28 @@ extension MainMenuViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard
-            let musicViewModel = dataSource?.itemIdentifier(for: indexPath)
+            let musicViewModel = dataSource?.itemIdentifier(for: indexPath),
+            let cell = tableView.cellForRow(at: indexPath) as? MusicCellView
         else {
-            return
-        }
-
-        guard let cell = tableView.cellForRow(at: indexPath) as? MusicCellView else {
             return
         }
         if let currentCell = currentPlayedCell, currentCell != cell {
             currentCell.indicatorView.stop()
+            viewModel.pauseAudio()
         }
-
-        if cell.indicatorView.isAnimating {
+        if cell.indicatorView.isPlaying {
             cell.indicatorView.stop()
+            viewModel.pauseAudio()
         } else {
             cell.indicatorView.start()
+            viewModel.playAudio(trackId: musicViewModel.trackId)
         }
-        if cell.indicatorView.isAnimating {
+        if cell.indicatorView.isPlaying {
             currentPlayedCell = cell
+            controlStackView.isHidden = false
         } else {
             currentPlayedCell = nil
+            controlStackView.isHidden = true
         }
     }
 }

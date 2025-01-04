@@ -68,3 +68,25 @@ extension MainMenuViewModel: MainMenuViewModelFetchProtocol {
 //        }
     }
 }
+
+extension MainMenuViewModel: MainMenuViewModelAudioProtocol {
+    func playAudio(trackId: Int) {
+        guard
+            let index = cachedMusicList?.results.firstIndex(where: {
+                $0.trackId == trackId
+            }),
+            let url = cachedMusicList?.results[index].previewUrl
+        else {
+            return
+        }
+        AudioManager.shared.playMusic(urlString: url)
+    }
+
+    func stopAudio() {
+        AudioManager.shared.stopMusic()
+    }
+
+    func pauseAudio() {
+        AudioManager.shared.pauseMusic()
+    }
+}

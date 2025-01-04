@@ -3,7 +3,7 @@ import UIKit
 internal class IndicatorView: UIView {
     private var bars: [UIView] = []
     private var barAnimations: [UIViewPropertyAnimator] = []
-    internal var isAnimating: Bool = false
+    internal var isPlaying: Bool = false
 
     override init(frame: CGRect = .zero) {
         super.init(frame: frame)
@@ -42,8 +42,8 @@ internal class IndicatorView: UIView {
     }
 
     func start() {
-        if isAnimating { return }
-        isAnimating = true
+        if isPlaying { return }
+        isPlaying = true
         for bar in bars {
             bar.isHidden = false
             animateBar(bar: bar)
@@ -51,8 +51,8 @@ internal class IndicatorView: UIView {
     }
 
     func stop() {
-        if !isAnimating { return }
-        isAnimating = false
+        if !isPlaying { return }
+        isPlaying = false
         for animation in barAnimations {
             animation.stopAnimation(true)
         }
