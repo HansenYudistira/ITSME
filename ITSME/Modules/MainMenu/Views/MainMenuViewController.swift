@@ -20,6 +20,7 @@ internal class MainMenuViewController: UIViewController {
     }()
     lazy var tableView: UITableView = {
         let tableView = UITableView()
+        tableView.backgroundColor = .secondarySystemBackground
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(MusicCellView.self, forCellReuseIdentifier: MusicCellView.identifier)
         tableView.delegate = self
@@ -37,10 +38,7 @@ internal class MainMenuViewController: UIViewController {
         })
         return tableView
     }()
-    lazy var controlStackView: ControlStackView = {
-        let controlStackView = ControlStackView()
-        return controlStackView
-    }()
+    lazy var musicControlView: MusicControlView = MusicControlView()
     lazy var errorAlert: UIAlertController = {
         let alert = UIAlertController(title: LocalizedKey.error.localized, message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: LocalizedKey.ok.localized, style: .default))
@@ -64,14 +62,39 @@ internal class MainMenuViewController: UIViewController {
 
     private func setupView() {
         navigationItem.searchController = searchBarController
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .secondarySystemBackground
         view.addSubview(tableView)
+        view.addSubview(musicControlView)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            musicControlView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            musicControlView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            musicControlView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            musicControlView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.12)
         ])
+        musicControlView.prevButton.addTarget(self, action: #selector(handleButtonTapped), for: .touchUpInside)
+        musicControlView.pausePlayButton.addTarget(self, action: #selector(handleButtonTapped), for: .touchUpInside)
+        musicControlView.nextButton.addTarget(self, action: #selector(handleButtonTapped), for: .touchUpInside)
+    }
+
+    @objc private func handleButtonTapped(_ sender: UIButton) {
+        guard
+            let label = sender.accessibilityLabel,
+            let buttonType = MusicControlView.ButtonType(rawValue: label)
+        else {
+            return
+        }
+        switch buttonType {
+        case .playPause:
+            print("play button tapped")
+        case .next:
+            print("next button tapped")
+        case .previous:
+            print("prev button tapped")
+        }
     }
 }
 
@@ -129,10 +152,8 @@ extension MainMenuViewController: UITableViewDelegate {
         }
         if cell.indicatorView.isPlaying {
             currentPlayedCell = cell
-            controlStackView.isHidden = false
         } else {
             currentPlayedCell = nil
-            controlStackView.isHidden = true
         }
     }
 }
