@@ -19,6 +19,7 @@ internal class MainMenuViewController: UIViewController {
     }()
     lazy var tableView: UITableView = {
         let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(MusicCellView.self, forCellReuseIdentifier: MusicCellView.identifier)
         tableView.delegate = self
         dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, itemIdentifier in
@@ -63,20 +64,12 @@ internal class MainMenuViewController: UIViewController {
     private func setupView() {
         navigationItem.searchController = searchBarController
         view.backgroundColor = .systemBackground
-        let mainStackView = UIStackView()
-        mainStackView.axis = .vertical
-        mainStackView.spacing = 8
-        mainStackView.translatesAutoresizingMaskIntoConstraints = false
-        mainStackView.addArrangedSubview(tableView)
-        mainStackView.addArrangedSubview(controlStackView)
-        view.addSubview(mainStackView)
+        view.addSubview(tableView)
         NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            tableView.heightAnchor.constraint(equalTo: mainStackView.heightAnchor, multiplier: 0.8),
-            controlStackView.heightAnchor.constraint(equalTo: mainStackView.heightAnchor, multiplier: 0.2)
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }
