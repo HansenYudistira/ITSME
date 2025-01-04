@@ -93,10 +93,11 @@ extension MainMenuViewController {
     }
 
     private func updateDataSource() {
+        guard let dataSource else { return }
         var snapshot = NSDiffableDataSourceSnapshot<Section, MusicViewModel>()
         snapshot.appendSections([.main])
         snapshot.appendItems(musicListViewModel)
-        dataSource?.apply(snapshot, animatingDifferences: true, completion: nil)
+        dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
     }
 
     private func showErrorAlert(message: String) {
