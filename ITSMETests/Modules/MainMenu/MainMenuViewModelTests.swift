@@ -111,14 +111,15 @@ final class MainMenuViewModelTests: XCTestCase {
     }
 
     func testSuccessConvertDataToModel() throws {
-        let expectation = self.expectation(description: "Fetch data should succeed")
+        let cachedMusicListExpectation = self.expectation(description: "Fetch data should succeed")
+        let musicListViewModelExpectation = self.expectation(description: "Music list should be updated")
         viewModel.$cachedMusicList
             .sink { musicList in
                 guard let musicList else { return }
                 XCTAssertEqual(musicList.resultCount, 3)
                 XCTAssertEqual(musicList.results.first?.trackName, "Just Give Me a Reason (feat. Nate Ruess)")
                 XCTAssertEqual(musicList.results.first?.artistName, "P!nk")
-                expectation.fulfill()
+                cachedMusicListExpectation.fulfill()
             }
             .store(in: &cancellables)
         viewModel.$musicListViewModel
@@ -127,7 +128,7 @@ final class MainMenuViewModelTests: XCTestCase {
                 XCTAssertEqual(musicList.count, 3)
                 XCTAssertEqual(musicList.first?.trackName, "Just Give Me a Reason (feat. Nate Ruess)")
                 XCTAssertEqual(musicList.first?.artistName, "P!nk")
-                expectation.fulfill()
+                musicListViewModelExpectation.fulfill()
             }
             .store(in: &cancellables)
         viewModel.fetchData(keyword: "Test")
