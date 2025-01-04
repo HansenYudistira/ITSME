@@ -70,11 +70,6 @@
 			path = ITSMETests;
 			sourceTree = "<group>";
 		};
-		A7386F8D2D2805B8007ECD24 /* ITSMEUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ITSMEUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,7 +130,6 @@
 				A7FE9C322D299B5900C2FDD3 /* ci_scripts */,
 				A7386F6C2D2805B7007ECD24 /* ITSME */,
 				A7386F832D2805B8007ECD24 /* ITSMETests */,
-				A7386F8D2D2805B8007ECD24 /* ITSMEUITests */,
 				A7386F6B2D2805B7007ECD24 /* Products */,
 				9995D6E03EB0257ACC5E44EA /* Pods */,
 				272D74827F606EC9C8E4DFAB /* Frameworks */,
@@ -224,9 +218,6 @@
 			);
 			dependencies = (
 				A7386F8C2D2805B8007ECD24 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				A7386F8D2D2805B8007ECD24 /* ITSMEUITests */,
 			);
 			name = ITSMEUITests;
 			productName = ITSMEUITests;
