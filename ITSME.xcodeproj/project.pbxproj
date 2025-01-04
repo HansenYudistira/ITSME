@@ -41,6 +41,7 @@
 		A7386F6A2D2805B7007ECD24 /* ITSME.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITSME.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7386F802D2805B8007ECD24 /* ITSMETests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ITSMETests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7386F8A2D2805B8007ECD24 /* ITSMEUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ITSMEUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7FE9C332D299B8200C2FDD3 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		E502312D4F0766C151CCB2C3 /* Pods_ITSME_ITSMEUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ITSME_ITSMEUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7CD65CDBFCCC020CAA6BF65 /* Pods_ITSME.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ITSME.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -66,15 +67,11 @@
 		};
 		A7386F832D2805B8007ECD24 /* ITSMETests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = ITSMETests;
 			sourceTree = "<group>";
 		};
 		A7386F8D2D2805B8007ECD24 /* ITSMEUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = ITSMEUITests;
 			sourceTree = "<group>";
 		};
@@ -129,13 +126,13 @@
 				409BB204FF475907AA2A731E /* Pods-ITSMETests.debug.xcconfig */,
 				6F2ACAFC38982F9923836033 /* Pods-ITSMETests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
 		A7386F612D2805B7007ECD24 = {
 			isa = PBXGroup;
 			children = (
+				A7FE9C322D299B5900C2FDD3 /* ci_scripts */,
 				A7386F6C2D2805B7007ECD24 /* ITSME */,
 				A7386F832D2805B8007ECD24 /* ITSMETests */,
 				A7386F8D2D2805B8007ECD24 /* ITSMEUITests */,
@@ -153,6 +150,14 @@
 				A7386F8A2D2805B8007ECD24 /* ITSMEUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A7FE9C322D299B5900C2FDD3 /* ci_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				A7FE9C332D299B8200C2FDD3 /* ci_post_clone.sh */,
+			);
+			path = ci_scripts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
