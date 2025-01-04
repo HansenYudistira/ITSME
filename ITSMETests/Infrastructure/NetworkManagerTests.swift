@@ -42,13 +42,6 @@ final class URLProtocolStub: URLProtocol {
 
 @available(iOS, deprecated: 13.0)
 final class NetworkManagerTests: XCTestCase {
-    func makeSUT(
-        mockSession: MockURLSession = MockURLSession(),
-        mockValidator: MockResponseValidator = MockResponseValidator()
-    ) -> NetworkManager {
-        return NetworkManager(urlSession: mockSession, responseValidator: mockValidator)
-    }
-
     func testGetDataSuccess() {
         let mockSession = MockURLSession()
         let jsonString = #"""
@@ -68,11 +61,11 @@ final class NetworkManagerTests: XCTestCase {
             headerFields: nil
         )
         let mockResponseValidator = MockResponseValidator()
-        let sut = makeSUT(mockSession: mockSession, mockValidator: mockResponseValidator)
+        let networkManager = NetworkManager(urlSession: mockSession, responseValidator: mockResponseValidator)
 
         let expectation = self.expectation(description: "Completion handler called")
 
-        sut.get(url: "https://mockurl.com") { result in
+        networkManager.get(url: "https://mockurl.com") { result in
             switch result {
             case .success(let data):
                 XCTAssertNotNil(data, "Expected valid data but got nil")
@@ -109,11 +102,11 @@ final class NetworkManagerTests: XCTestCase {
         mockValidator.shouldThrowError = true
         mockValidator.thrownError = NetworkError.invalidResponse
 
-        let sut = makeSUT(mockSession: mockSession, mockValidator: mockValidator)
+        let networkManager = NetworkManager(urlSession: mockSession, responseValidator: mockValidator)
 
         let expectation = self.expectation(description: "Completion handler called")
 
-        sut.get(url: "mockUrl") { result in
+        networkManager.get(url: "mockUrl") { result in
             switch result {
             case .success:
                 XCTFail("Expected an error to be thrown, but the call succeeded")
