@@ -1,4 +1,4 @@
-struct MusicListModel: Decodable {
+internal struct MusicListModel: Decodable {
     let resultCount: Int
     let results: [TrackModel]
 }

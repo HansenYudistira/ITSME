@@ -1,7 +1,7 @@
 internal struct MainMenuViewModelContract {
-    let networkManager: APIClient
-    let dataDecoder: DataDecoderProtocol
-    let urlConstructor: URLConstructorProtocol
+    internal let networkManager: APIClient
+    internal let dataDecoder: DataDecoderProtocol
+    internal let urlConstructor: URLConstructorProtocol
 }
 
 protocol MainMenuViewModelFetchProtocol {

@@ -1,6 +1,6 @@
 import Foundation
 
-struct TrackModel: Decodable {
+internal struct TrackModel: Decodable {
     let trackId: Int?
     let trackName: String?
     let collectionId: Int?
@@ -29,5 +29,16 @@ struct TrackModel: Decodable {
             print("Error decoding TrackModel: \(error)")
             throw error
         }
+    }
+}
+
+extension TrackModel {
+    func toViewModel() -> TrackViewModel {
+        return TrackViewModel(
+            trackId: trackId ?? -1,
+            trackName: trackName ?? "",
+            collectionName: collectionName ?? "",
+            artistName: artistName ?? "",
+            imageURL: imageURL ?? "")
     }
 }
