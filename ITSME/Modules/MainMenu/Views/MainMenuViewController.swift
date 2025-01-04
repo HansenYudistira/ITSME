@@ -7,6 +7,7 @@ internal class MainMenuViewController: UIViewController {
     enum Section {
         case main
     }
+    private var currentPlayedCell: MusicCellView?
     var dataSource: UITableViewDiffableDataSource<Section, MusicViewModel>?
     private var cancellables: Set<AnyCancellable> = []
 
@@ -114,7 +115,24 @@ extension MainMenuViewController: UITableViewDelegate {
         else {
             return
         }
-        print(musicViewModel.trackName)
+
+        guard let cell = tableView.cellForRow(at: indexPath) as? MusicCellView else {
+            return
+        }
+        if let currentCell = currentPlayedCell, currentCell != cell {
+            currentCell.indicatorView.stop()
+        }
+
+        if cell.indicatorView.isAnimating {
+            cell.indicatorView.stop()
+        } else {
+            cell.indicatorView.start()
+        }
+        if cell.indicatorView.isAnimating {
+            currentPlayedCell = cell
+        } else {
+            currentPlayedCell = nil
+        }
     }
 }
 
