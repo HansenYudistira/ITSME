@@ -19,7 +19,8 @@ internal struct MainMenuModule: Module {
         let contract = MainMenuViewModelContract(
             networkManager: NetworkManager(),
             dataDecoder: DataDecoder(),
-            urlConstructor: URLConstructor()
+            urlConstructor: URLConstructor(),
+            audioManager: AudioManager()
         )
         let vm = MainMenuViewModel(contract: contract)
         let viewController = MainMenuViewController(viewModel: vm)

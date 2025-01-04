@@ -4,6 +4,7 @@ internal class MainMenuViewModel {
     private let networkManager: APIClient
     private let decoder: DataDecoderProtocol
     private let urlConstructor: URLConstructorProtocol
+    private let audioManager: AudioManagerProtocol
 
     @Published var cachedMusicList: MusicListModel?
     @Published var musicListViewModel: [MusicViewModel]?
@@ -14,6 +15,7 @@ internal class MainMenuViewModel {
         self.networkManager = contract.networkManager
         self.decoder = contract.dataDecoder
         self.urlConstructor = contract.urlConstructor
+        self.audioManager = contract.audioManager
     }
     
     let mockData: String = """
@@ -79,14 +81,18 @@ extension MainMenuViewModel: MainMenuViewModelAudioProtocol {
         else {
             return
         }
-        AudioManager.shared.playMusic(urlString: url)
+        do {
+            try audioManager.playMusic(urlString: url)
+        } catch {
+            self.errorMessage = "error in playing the music \(error.localizedDescription)"
+        }
     }
 
     func stopAudio() {
-        AudioManager.shared.stopMusic()
+        audioManager.stopMusic()
     }
 
     func pauseAudio() {
-        AudioManager.shared.pauseMusic()
+        audioManager.pauseMusic()
     }
 }

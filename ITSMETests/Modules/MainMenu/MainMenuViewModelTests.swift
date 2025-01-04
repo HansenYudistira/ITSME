@@ -35,6 +35,29 @@ struct MockURLConstructor: URLConstructorProtocol {
     }
 }
 
+final class MockAudioManager {
+    var playMusicCalled = false
+    var stopMusicCalled = false
+    var pauseMusicCalled = false
+    var playedUrl: String?
+    static let shared = MockAudioManager()
+
+    internal func playMusic(urlString: String) {
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL: \(urlString)")
+            return
+        }
+    }
+
+    internal func stopMusic() {
+        
+    }
+
+    internal func pauseMusic() {
+        
+    }
+}
+
 final class MainMenuViewModelTests: XCTestCase {
     var cancellables: Set<AnyCancellable> = []
 
@@ -47,7 +70,8 @@ final class MainMenuViewModelTests: XCTestCase {
         let contract = MainMenuViewModelContract(
             networkManager: MockNetworkManager(),
             dataDecoder: DataDecoder(),
-            urlConstructor: URLConstructor()
+            urlConstructor: URLConstructor(),
+            audioManager: AudioManager()
         )
         let vm = MainMenuViewModel(contract: contract)
         let expectation = self.expectation(description: "Fetch data should succeed")

@@ -1,11 +1,16 @@
 import AVFoundation
 import UIKit
 
-internal class AudioManager {
-    static let shared = AudioManager()
-    private var audioPlayer: AVPlayer?
+protocol AudioManagerProtocol {
+    func playMusic(urlString: String) throws
+    func stopMusic()
+    func pauseMusic()
+}
 
-    private init() {
+internal class AudioManager: AudioManagerProtocol {
+    internal var audioPlayer: AVPlayer?
+
+    init() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleAppDidEnterBackground),
@@ -21,10 +26,9 @@ internal class AudioManager {
         )
     }
 
-    internal func playMusic(urlString: String) {
+    internal func playMusic(urlString: String) throws {
         guard let url = URL(string: urlString) else {
-            print("Invalid URL: \(urlString)")
-            return
+            throw NetworkError.invalidURL
         }
         audioPlayer = AVPlayer(url: url)
         audioPlayer?.play()
