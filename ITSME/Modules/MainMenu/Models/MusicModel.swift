@@ -1,6 +1,6 @@
 import Foundation
 
-internal struct TrackModel: Decodable {
+internal struct MusicModel: Decodable {
     let trackId: Int?
     let trackName: String?
     let collectionId: Int?
@@ -32,9 +32,9 @@ internal struct TrackModel: Decodable {
     }
 }
 
-extension TrackModel {
-    func toViewModel() -> TrackViewModel {
-        return TrackViewModel(
+extension MusicModel {
+    func toViewModel() -> MusicViewModel {
+        return MusicViewModel(
             trackId: trackId ?? -1,
             trackName: trackName ?? "",
             collectionName: collectionName ?? "",

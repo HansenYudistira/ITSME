@@ -60,6 +60,15 @@ final class MainMenuViewModelTests: XCTestCase {
                 expectation.fulfill()
             }
             .store(in: &cancellables)
+        vm.$musicListViewModel
+            .sink { musicList in
+                guard let musicList else { return }
+                XCTAssertEqual(musicList.count, 3)
+                XCTAssertEqual(musicList.first?.trackName, "Just Give Me a Reason (feat. Nate Ruess)")
+                XCTAssertEqual(musicList.first?.artistName, "P!nk")
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
         vm.fetchData(keyword: "Test")
         waitForExpectations(timeout: 2, handler: nil)
         cancellables = []

@@ -1,4 +1,4 @@
 internal struct MusicListModel: Decodable {
     let resultCount: Int
-    let results: [TrackModel]
+    let results: [MusicModel]
 }
