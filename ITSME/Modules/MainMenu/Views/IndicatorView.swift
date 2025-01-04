@@ -18,7 +18,7 @@ internal class IndicatorView: UIView {
         backgroundColor = .systemBackground
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 4
+        stackView.spacing = 0
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
@@ -31,10 +31,10 @@ internal class IndicatorView: UIView {
             stackView.heightAnchor.constraint(equalToConstant: 50)
         ])
 
-        for _ in 0..<10 {
+        for _ in 0..<30 {
             let bar = UIView()
-            bar.backgroundColor = .systemBlue
-            bar.layer.cornerRadius = 2
+            bar.backgroundColor = .systemGray
+            bar.layer.cornerRadius = 1
             bar.isHidden = true
             bars.append(bar)
             stackView.addArrangedSubview(bar)
@@ -44,9 +44,9 @@ internal class IndicatorView: UIView {
     func start() {
         if isAnimating { return }
         isAnimating = true
-        for (index, bar) in bars.enumerated() {
+        for bar in bars {
             bar.isHidden = false
-            animateBar(bar: bar, index: index)
+            animateBar(bar: bar)
         }
     }
 
@@ -59,11 +59,12 @@ internal class IndicatorView: UIView {
         bars.forEach { $0.isHidden = true }
     }
 
-    private func animateBar(bar: UIView, index: Int) {
+    private func animateBar(bar: UIView) {
         let initialHeight = CGFloat.random(in: 0...10)
+        let duration = CGFloat.random(in: 2...5)
         bar.bounds.size.height = initialHeight
         let targetHeight: CGFloat = 50
-        let animation = UIViewPropertyAnimator(duration: 1 + Double(index) * 0.2, curve: .easeInOut) {
+        let animation = UIViewPropertyAnimator(duration: duration, curve: .easeInOut) {
             bar.bounds.size.height = targetHeight
         }
 
@@ -71,7 +72,7 @@ internal class IndicatorView: UIView {
 
         animation.addCompletion { [weak self] _ in
             bar.bounds.size.height = initialHeight
-            self?.animateBar(bar: bar, index: index)
+            self?.animateBar(bar: bar)
         }
 
         animation.startAnimation()
