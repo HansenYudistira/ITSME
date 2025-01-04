@@ -7,7 +7,9 @@ internal class MusicControlView: UIView {
         case next = "Next"
     }
     lazy var pausePlayButton: UIButton = {
-        let button = UIButton(type: .system)
+        var configuration = UIButton.Configuration.plain()
+        configuration.baseBackgroundColor = .secondarySystemBackground
+        let button = UIButton(configuration: configuration, primaryAction: nil)
         button.setImage(UIImage(systemName: "play.fill"), for: .normal)
         button.setImage(UIImage(systemName: "pause.fill"), for: .selected)
         button.tintColor = .black

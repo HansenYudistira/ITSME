@@ -9,6 +9,7 @@ protocol AudioManagerProtocol {
 
 internal class AudioManager: AudioManagerProtocol {
     internal var audioPlayer: AVPlayer?
+    internal var playerItem: AVPlayerItem?
 
     init() {
         NotificationCenter.default.addObserver(
@@ -30,13 +31,31 @@ internal class AudioManager: AudioManagerProtocol {
         guard let url = URL(string: urlString) else {
             throw NetworkError.invalidURL
         }
-        audioPlayer = AVPlayer(url: url)
+        playerItem = AVPlayerItem(url: url)
+        audioPlayer = AVPlayer(playerItem: playerItem)
+        audioPlayer?.play()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(playerDidFinishPlaying),
+            name: .AVPlayerItemDidPlayToEndTime,
+            object: playerItem
+        )
+    }
+
+    @objc private func playerDidFinishPlaying() {
+        audioPlayer?.seek(to: .zero)
         audioPlayer?.play()
     }
 
     internal func stopMusic() {
         audioPlayer?.pause()
+        if let item = playerItem {
+            NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: item)
+        }
+        audioPlayer?.replaceCurrentItem(with: nil)
         audioPlayer = nil
+        playerItem = nil
     }
 
     internal func pauseMusic() {

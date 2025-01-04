@@ -4,6 +4,7 @@ import Combine
 internal class MainMenuViewController: UIViewController {
     private let viewModel: MainMenuViewModel
     private var musicListViewModel: [MusicViewModel] = []
+    private var currentlyPlayingTrackId: Int?
     enum Section {
         case main
     }
@@ -33,7 +34,13 @@ internal class MainMenuViewController: UIViewController {
             else {
                 fatalError("Could not dequeue MusicCellView")
             }
-            cell.configure(with: self.musicListViewModel[indexPath.row])
+            let musicViewModel = self.musicListViewModel[indexPath.row]
+            cell.configure(with: musicViewModel)
+            if musicViewModel.trackId == self.currentlyPlayingTrackId {
+                cell.indicatorView.start()
+            } else {
+                cell.indicatorView.stop()
+            }
             return cell
         })
         return tableView
@@ -75,6 +82,7 @@ internal class MainMenuViewController: UIViewController {
             musicControlView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             musicControlView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.12)
         ])
+        musicControlView.isHidden = true
         musicControlView.prevButton.addTarget(self, action: #selector(handleButtonTapped), for: .touchUpInside)
         musicControlView.pausePlayButton.addTarget(self, action: #selector(handleButtonTapped), for: .touchUpInside)
         musicControlView.nextButton.addTarget(self, action: #selector(handleButtonTapped), for: .touchUpInside)
@@ -89,11 +97,60 @@ internal class MainMenuViewController: UIViewController {
         }
         switch buttonType {
         case .playPause:
-            print("play button tapped")
+            playPauseTrack(sender)
         case .next:
-            print("next button tapped")
+            playNextTrack()
         case .previous:
-            print("prev button tapped")
+            playPreviousTrack()
+        }
+    }
+
+    private func playPauseTrack(_ sender: UIButton) {
+        guard
+            let currentCell = currentPlayedCell,
+            let trackId = currentlyPlayingTrackId
+        else {
+            return
+        }
+        if currentCell.indicatorView.isPlaying {
+            viewModel.pauseAudio()
+            currentCell.indicatorView.stop()
+            sender.isSelected.toggle()
+        } else {
+            viewModel.playAudio(trackId: trackId)
+            currentCell.indicatorView.start()
+            sender.isSelected.toggle()
+        }
+    }
+
+    private func playNextTrack() {
+        guard let currentTrackId = currentlyPlayingTrackId else {
+            return
+        }
+        if let currentIndex = musicListViewModel.firstIndex(where: { $0.trackId == currentTrackId }) {
+            let nextIndex = (currentIndex + 1) % musicListViewModel.count
+            playTrack(at: nextIndex)
+        }
+    }
+
+    private func playPreviousTrack() {
+        guard let currentTrackId = currentlyPlayingTrackId else {
+            return
+        }
+        if let currentIndex = musicListViewModel.firstIndex(where: { $0.trackId == currentTrackId }) {
+            let previousIndex = (currentIndex - 1 + musicListViewModel.count) % musicListViewModel.count
+            playTrack(at: previousIndex)
+        }
+    }
+
+    private func playTrack(at index: Int) {
+        let newTrack = musicListViewModel[index]
+        viewModel.playAudio(trackId: newTrack.trackId)
+        currentlyPlayingTrackId = newTrack.trackId
+        currentPlayedCell?.indicatorView.stop()
+        if let newCell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? MusicCellView {
+            newCell.indicatorView.start()
+            currentPlayedCell = newCell
         }
     }
 }
@@ -142,18 +199,24 @@ extension MainMenuViewController: UITableViewDelegate {
         if let currentCell = currentPlayedCell, currentCell != cell {
             currentCell.indicatorView.stop()
             viewModel.pauseAudio()
+            musicControlView.isHidden = true
+            currentlyPlayingTrackId = nil
         }
         if cell.indicatorView.isPlaying {
             cell.indicatorView.stop()
             viewModel.pauseAudio()
+            currentlyPlayingTrackId = nil
         } else {
             cell.indicatorView.start()
             viewModel.playAudio(trackId: musicViewModel.trackId)
+            currentlyPlayingTrackId = musicViewModel.trackId
         }
         if cell.indicatorView.isPlaying {
             currentPlayedCell = cell
+            musicControlView.isHidden = false
         } else {
             currentPlayedCell = nil
+            musicControlView.isHidden = true
         }
     }
 }
