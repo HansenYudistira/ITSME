@@ -2,6 +2,28 @@ import XCTest
 import Combine
 @testable import ITSME
 
+final class MockAudioManager: AudioManagerProtocol {
+    var playMusicCalled = false
+    var stopMusicCalled = false
+    var pauseMusicCalled = false
+    var errorToThrow: Error?
+    
+    func playMusic(urlString: String) throws {
+        playMusicCalled = true
+        if let error = errorToThrow {
+            throw error
+        }
+    }
+    
+    func stopMusic() {
+        stopMusicCalled = true
+    }
+    
+    func pauseMusic() {
+        pauseMusicCalled = true
+    }
+}
+
 final class MockNetworkManager: APIClient {
     let mockData: String = """
     {
@@ -35,31 +57,53 @@ struct MockURLConstructor: URLConstructorProtocol {
     }
 }
 
-final class MockAudioManager {
-    var playMusicCalled = false
-    var stopMusicCalled = false
-    var pauseMusicCalled = false
-    var playedUrl: String?
-    static let shared = MockAudioManager()
-
-    internal func playMusic(urlString: String) {
-        guard let url = URL(string: urlString) else {
-            print("Invalid URL: \(urlString)")
-            return
+extension MusicModel {
+    static func mock() -> MusicModel? {
+        let json = """
+        {
+            "trackId": 1,
+            "trackName": "Sample Track",
+            "collectionId": 1,
+            "collectionName": "Sample Collection",
+            "artistId": 1,
+            "artistName": "Sample Artist",
+            "artworkUrl100": "https://example.com/sample-image.jpg",
+            "previewUrl": "https://example.com/sample-preview.mp3"
         }
-    }
+        """
 
-    internal func stopMusic() {
-        
-    }
+        let data = json.data(using: .utf8)!
 
-    internal func pauseMusic() {
-        
+        let decoder = JSONDecoder()
+        do {
+            let mockMusic = try decoder.decode(MusicModel.self, from: data)
+            return mockMusic
+        } catch {
+            print("Error decoding mock music: \(error)")
+            return nil
+        }
     }
 }
 
 final class MainMenuViewModelTests: XCTestCase {
-    var cancellables: Set<AnyCancellable> = []
+    var cancellables: Set<AnyCancellable>!
+    var viewModel: MainMenuViewModel!
+    var mockAudioManager: MockAudioManager!
+    
+    override func setUp() {
+        super.setUp()
+        cancellables = []
+        mockAudioManager = MockAudioManager()
+        let contract = MainMenuViewModelContract(
+            networkManager: MockNetworkManager(),
+            dataDecoder: DataDecoder(),
+            urlConstructor: URLConstructor(),
+            audioManager: mockAudioManager
+        )
+
+        viewModel = MainMenuViewModel(contract: contract)
+
+    }
 
     override func tearDown() {
         cancellables = []
@@ -67,15 +111,8 @@ final class MainMenuViewModelTests: XCTestCase {
     }
 
     func testSuccessConvertDataToModel() throws {
-        let contract = MainMenuViewModelContract(
-            networkManager: MockNetworkManager(),
-            dataDecoder: DataDecoder(),
-            urlConstructor: URLConstructor(),
-            audioManager: AudioManager()
-        )
-        let vm = MainMenuViewModel(contract: contract)
         let expectation = self.expectation(description: "Fetch data should succeed")
-        vm.$cachedMusicList
+        viewModel.$cachedMusicList
             .sink { musicList in
                 guard let musicList else { return }
                 XCTAssertEqual(musicList.resultCount, 3)
@@ -84,7 +121,7 @@ final class MainMenuViewModelTests: XCTestCase {
                 expectation.fulfill()
             }
             .store(in: &cancellables)
-        vm.$musicListViewModel
+        viewModel.$musicListViewModel
             .sink { musicList in
                 guard let musicList else { return }
                 XCTAssertEqual(musicList.count, 3)
@@ -93,8 +130,46 @@ final class MainMenuViewModelTests: XCTestCase {
                 expectation.fulfill()
             }
             .store(in: &cancellables)
-        vm.fetchData(keyword: "Test")
+        viewModel.fetchData(keyword: "Test")
         waitForExpectations(timeout: 2, handler: nil)
         cancellables = []
+    }
+    
+    func testPlayMusicSuccess() {
+        let trackId = 1
+        guard let mockMusic = MusicModel.mock() else {
+            XCTFail("failed to created mock music model")
+            return
+        }
+        viewModel.cachedMusicList = MusicListModel(resultCount: 1, results: [mockMusic])
+        viewModel.playAudio(trackId: trackId)
+        XCTAssertTrue(mockAudioManager.playMusicCalled)
+    }
+    
+    func testPlayMusicWithInvalidURL() {
+        let trackId = 1
+        guard let mockMusic = MusicModel.mock() else {
+            XCTFail("failed to created mock music model")
+            return
+        }
+        viewModel.cachedMusicList = MusicListModel(resultCount: 1, results: [mockMusic])
+        mockAudioManager.errorToThrow = NSError(domain: "Test", code: 1, userInfo: nil)
+        viewModel.playAudio(trackId: trackId)
+        let expectedMessage = "error in playing the music"
+        let actualMessage = viewModel.errorMessage ?? ""
+        XCTAssertTrue(
+            actualMessage.contains(expectedMessage),
+            "Expected error message to contain '\(expectedMessage)', but got \(actualMessage)"
+        )
+    }
+    
+    func testStopMusic() {
+        viewModel.stopAudio()
+        XCTAssertTrue(mockAudioManager.stopMusicCalled)
+    }
+    
+    func testPauseMusic() {
+        viewModel.pauseAudio()
+        XCTAssertTrue(mockAudioManager.pauseMusicCalled)
     }
 }
