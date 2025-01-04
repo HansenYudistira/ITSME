@@ -9,6 +9,7 @@ internal class MainMenuViewModel {
     @Published var cachedMusicList: MusicListModel?
     @Published var musicListViewModel: [MusicViewModel]?
     @Published var errorMessage: String?
+    @Published var isLoading: Bool = false
     private var cancellables: Set<AnyCancellable> = []
 
     init(contract: MainMenuViewModelContract) {
@@ -21,6 +22,7 @@ internal class MainMenuViewModel {
 
 extension MainMenuViewModel: MainMenuViewModelFetchProtocol {
     func fetchData(keyword: String) {
+        isLoading = true
         let keywordQuery = keyword.replacingOccurrences(of: " ", with: "+")
         let url: String = urlConstructor.constructURL(with: keywordQuery)
         networkManager.get(url: url) { [weak self] result in
@@ -41,6 +43,7 @@ extension MainMenuViewModel: MainMenuViewModelFetchProtocol {
             case .failure(let error):
                 self.errorMessage = "Error fetching data: \(error)"
             }
+            isLoading = false
         }
     }
 }

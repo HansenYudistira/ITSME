@@ -5,6 +5,7 @@ enum LocalizedKey: String {
     case ok
     case cancel
     case error
+    case loading
     
     var localized: String {
         let key: String = String(describing: self)
@@ -21,6 +22,8 @@ enum LocalizedKey: String {
             return "Cancel"
         case .error:
             return "Error"
+        case .loading:
+            return "Loading..."
         }
     }
 }

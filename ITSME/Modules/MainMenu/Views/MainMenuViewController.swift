@@ -51,6 +51,7 @@ internal class MainMenuViewController: UIViewController {
         alert.addAction(UIAlertAction(title: LocalizedKey.ok.localized, style: .default))
         return alert
     }()
+    lazy var loadingView: LoadingView = LoadingView()
 
     init(viewModel: MainMenuViewModel) {
         self.viewModel = viewModel
@@ -72,6 +73,7 @@ internal class MainMenuViewController: UIViewController {
         view.backgroundColor = .secondarySystemBackground
         view.addSubview(tableView)
         view.addSubview(musicControlView)
+        view.addSubview(loadingView)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -80,7 +82,11 @@ internal class MainMenuViewController: UIViewController {
             musicControlView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             musicControlView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             musicControlView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            musicControlView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.12)
+            musicControlView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.12),
+            loadingView.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         musicControlView.isHidden = true
         musicControlView.prevButton.addTarget(self, action: #selector(handleButtonTapped), for: .touchUpInside)
@@ -171,6 +177,17 @@ extension MainMenuViewController {
                 self.showErrorAlert(message: errorMessage)
             }
             .store(in: &cancellables)
+        viewModel.$isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                guard let self else { return }
+                if isLoading {
+                    self.showLoadingIndicator()
+                } else {
+                    self.hideLoadingIndicator()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     private func updateDataSource() {
@@ -184,6 +201,14 @@ extension MainMenuViewController {
     private func showErrorAlert(message: String) {
         errorAlert.message = message
         present(errorAlert, animated: true, completion: nil)
+    }
+
+    private func showLoadingIndicator() {
+        loadingView.isHidden = false
+    }
+
+    private func hideLoadingIndicator() {
+        loadingView.isHidden = true
     }
 }
 
