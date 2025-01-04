@@ -2,6 +2,9 @@ import UIKit
 
 enum LocalizedKey: String {
     case search
+    case ok
+    case cancel
+    case error
     
     var localized: String {
         let key: String = String(describing: self)
@@ -12,6 +15,12 @@ enum LocalizedKey: String {
         switch self {
         case .search:
             return "Search bar placeholder"
+        case .ok:
+            return "Okay"
+        case .cancel:
+            return "Cancel"
+        case .error:
+            return "Error"
         }
     }
 }

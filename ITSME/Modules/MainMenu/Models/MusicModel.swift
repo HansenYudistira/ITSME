@@ -9,7 +9,7 @@ internal struct MusicModel: Decodable {
     let artistName: String?
     let imageURL: String?
     let previewUrl: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case trackId, trackName, collectionId, collectionName, artistId, artistName, artworkUrl100, previewUrl
     }

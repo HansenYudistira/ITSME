@@ -39,6 +39,11 @@ internal class MainMenuViewController: UIViewController {
         let controlStackView = ControlStackView()
         return controlStackView
     }()
+    lazy var errorAlert: UIAlertController = {
+        let alert = UIAlertController(title: LocalizedKey.error.localized, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: LocalizedKey.ok.localized, style: .default))
+        return alert
+    }()
 
     init(viewModel: MainMenuViewModel) {
         self.viewModel = viewModel
@@ -70,11 +75,13 @@ internal class MainMenuViewController: UIViewController {
             mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            tableView.heightAnchor.constraint(equalTo: mainStackView.heightAnchor, multiplier: 0.8)
+            tableView.heightAnchor.constraint(equalTo: mainStackView.heightAnchor, multiplier: 0.8),
+            controlStackView.heightAnchor.constraint(equalTo: mainStackView.heightAnchor, multiplier: 0.2)
         ])
     }
+}
 
+extension MainMenuViewController {
     private func bindViewModel() {
         viewModel.$musicListViewModel
             .sink { [weak self] musicList in
@@ -83,13 +90,25 @@ internal class MainMenuViewController: UIViewController {
                 self.updateDataSource()
             }
             .store(in: &cancellables)
+        viewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                guard let self, let errorMessage else { return }
+                self.showErrorAlert(message: errorMessage)
+            }
+            .store(in: &cancellables)
     }
-    
+
     private func updateDataSource() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, MusicViewModel>()
         snapshot.appendSections([.main])
         snapshot.appendItems(musicListViewModel)
         dataSource?.apply(snapshot, animatingDifferences: true, completion: nil)
+    }
+
+    private func showErrorAlert(message: String) {
+        errorAlert.message = message
+        present(errorAlert, animated: true, completion: nil)
     }
 }
 

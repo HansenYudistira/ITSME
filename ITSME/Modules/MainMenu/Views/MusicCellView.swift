@@ -9,21 +9,21 @@ internal class MusicCellView: UITableViewCell {
         label.numberOfLines = 0
         return label
     }()
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupView()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setupView() {
         contentView.addSubview(songName)
         setupConstraints()
     }
-    
+
     private func setupConstraints() {
         songName.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -33,7 +33,7 @@ internal class MusicCellView: UITableViewCell {
             songName.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }
-    
+
     internal func configure(with model: MusicViewModel) {
         songName.text = model.trackName
     }
