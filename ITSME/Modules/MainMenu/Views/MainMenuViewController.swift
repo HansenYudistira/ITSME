@@ -14,7 +14,7 @@ internal class MainMenuViewController: UIViewController {
 
     lazy var searchBarController: UISearchController = {
         let searchController = UISearchController()
-        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = LocalizedKey.search.localized
         return searchController
@@ -221,9 +221,9 @@ extension MainMenuViewController: UITableViewDelegate {
     }
 }
 
-extension MainMenuViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let query = searchController.searchBar.text, !query.isEmpty else {
+extension MainMenuViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar)  {
+        guard let query = searchBar.text, !query.isEmpty else {
             return
         }
         viewModel.fetchData(keyword: query)
