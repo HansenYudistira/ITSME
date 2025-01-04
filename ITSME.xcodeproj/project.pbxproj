@@ -202,6 +202,7 @@
 					};
 					A7386F892D2805B8007ECD24 = {
 						CreatedOnToolsVersion = 16.0;
+						LastSwiftMigration = 1600;
 						TestTargetID = A7386F692D2805B7007ECD24;
 					};
 				};
@@ -518,6 +519,7 @@
 		A7386F9C2D2805B8007ECD24 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HQNZ8TWNYS;
@@ -526,6 +528,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hansen.ITSMEUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = ITSME;
@@ -535,6 +538,7 @@
 		A7386F9D2D2805B8007ECD24 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HQNZ8TWNYS;
