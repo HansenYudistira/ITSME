@@ -349,7 +349,7 @@
 		};
 		3BF218F4C00370ED8FC77BB8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -359,7 +359,7 @@
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ITSME/Pods-ITSME-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ITSME/Pods-ITSME-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
