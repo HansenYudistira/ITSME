@@ -36,7 +36,6 @@
 		A7FE9DAD2D2A07A100C2FDD3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7FE9D912D2A07A100C2FDD3 /* Assets.xcassets */; };
 		A7FE9DAF2D2A07A100C2FDD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7FE9D932D2A07A100C2FDD3 /* LaunchScreen.storyboard */; };
 		A7FE9DB02D2A07A100C2FDD3 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A7FE9D942D2A07A100C2FDD3 /* Localizable.xcstrings */; };
-		A7FE9DBA2D2A07A600C2FDD3 /* AudioManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FE9DB12D2A07A600C2FDD3 /* AudioManagerTests.swift */; };
 		A7FE9DBB2D2A07A600C2FDD3 /* NetworkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FE9DB22D2A07A600C2FDD3 /* NetworkManagerTests.swift */; };
 		A7FE9DBC2D2A07A600C2FDD3 /* ResponseValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FE9DB32D2A07A600C2FDD3 /* ResponseValidatorTests.swift */; };
 		A7FE9DBD2D2A07A600C2FDD3 /* URLConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FE9DB42D2A07A600C2FDD3 /* URLConstructorTests.swift */; };
@@ -97,7 +96,6 @@
 		A7FE9D932D2A07A100C2FDD3 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A7FE9D942D2A07A100C2FDD3 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		A7FE9D952D2A07A100C2FDD3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A7FE9DB12D2A07A600C2FDD3 /* AudioManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManagerTests.swift; sourceTree = "<group>"; };
 		A7FE9DB22D2A07A600C2FDD3 /* NetworkManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerTests.swift; sourceTree = "<group>"; };
 		A7FE9DB32D2A07A600C2FDD3 /* ResponseValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseValidatorTests.swift; sourceTree = "<group>"; };
 		A7FE9DB42D2A07A600C2FDD3 /* URLConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConstructorTests.swift; sourceTree = "<group>"; };
@@ -322,7 +320,6 @@
 		A7FE9DB52D2A07A600C2FDD3 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				A7FE9DB12D2A07A600C2FDD3 /* AudioManagerTests.swift */,
 				A7FE9DB22D2A07A600C2FDD3 /* NetworkManagerTests.swift */,
 				A7FE9DB32D2A07A600C2FDD3 /* ResponseValidatorTests.swift */,
 				A7FE9DB42D2A07A600C2FDD3 /* URLConstructorTests.swift */,
@@ -631,7 +628,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7FE9DBA2D2A07A600C2FDD3 /* AudioManagerTests.swift in Sources */,
 				A7FE9DBB2D2A07A600C2FDD3 /* NetworkManagerTests.swift in Sources */,
 				A7FE9DBC2D2A07A600C2FDD3 /* ResponseValidatorTests.swift in Sources */,
 				A7FE9DBD2D2A07A600C2FDD3 /* URLConstructorTests.swift in Sources */,
