@@ -1,13 +1,13 @@
 //
-//  UITests.swift
+//  SampleUITests.swift
 //  ITSMEUITests
 //
-//  Created by Hansen Yudistira on 04/01/25.
+//  Created by Hansen Yudistira on 05/01/25.
 //
 
 import XCTest
 
-final class UITests: XCTestCase {
+final class SampleUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -28,14 +28,5 @@ final class UITests: XCTestCase {
         app.launch()
 
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
     }
 }

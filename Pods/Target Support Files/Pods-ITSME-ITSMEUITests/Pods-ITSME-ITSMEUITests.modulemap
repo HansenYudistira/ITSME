@@ -1,0 +1,6 @@
+framework module Pods_ITSME_ITSMEUITests {
+  umbrella header "Pods-ITSME-ITSMEUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,6 @@
+framework module Pods_ITSME {
+  umbrella header "Pods-ITSME-umbrella.h"
+
+  export *
+  module * { export * }
+}
