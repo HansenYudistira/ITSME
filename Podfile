@@ -7,6 +7,7 @@ target 'ITSME' do
 
   # Pods for ITSME
   pod 'Kingfisher'
+  pod 'AppCenter'
 
   target 'ITSMETests' do
     inherit! :search_paths
