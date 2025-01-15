@@ -18,7 +18,7 @@ internal class NetworkManager {
     private let responseValidator: ResponseValidatorProtocol
 
     init(
-        urlSession: URLSessionProtocol = URLSession.shared,
+        urlSession: URLSessionProtocol,
         responseValidator: ResponseValidatorProtocol = ResponseValidator()) {
         self.urlSession = urlSession
         self.responseValidator = responseValidator

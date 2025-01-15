@@ -16,8 +16,11 @@ internal class ModuleAssembler {
 
 internal struct MainMenuModule: Module {
     internal func assemble(coordinator: Coordinator) -> MainMenuViewController {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 5.0
+        let session = URLSession(configuration: configuration)
         let contract = MainMenuViewModelContract(
-            networkManager: NetworkManager(),
+            networkManager: NetworkManager(urlSession: session),
             dataDecoder: DataDecoder(),
             urlConstructor: URLConstructor(),
             audioManager: AudioManager()
